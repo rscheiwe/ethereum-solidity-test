@@ -11,20 +11,24 @@ const Web3 = require('web3');
 //depending on the network we're trying to connect to
 const web3 = new Web3(ganache.provider());
 
-beforeEach(() => {
+
+let accounts;
+beforeEach(async () => {
   // Get a list of all accounts
   //web3 module has many cryptocurrencies associated with it
   //EVERY FUNCTION we call with web3 is asynchronous, so they
   //return a promise
-  web3.eth.getAccounts()
-    .then(fetchedAccounts => {
-      console.log(fetchedAccounts)
-    })
+  // web3.eth.getAccounts()
+  //   .then(fetchedAccounts => {
+  //     console.log(fetchedAccounts)
+  //   })
+  accounts = await web3.eth.getAccounts()
   // Use one of those accounts to deploy the contract
 })
 
 describe('Inbox', () => {
   it('deploys a contract', () => {
+    console.log(accounts)
 
   })
 })
