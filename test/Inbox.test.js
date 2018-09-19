@@ -15,6 +15,7 @@ const { interface, bytecode } = require('../compile.js')
 
 let accounts;
 let inbox;
+// const INITIAL_STRING = 'Hi there!'
 
 beforeEach(async () => {
   // Get a list of all accounts
@@ -28,14 +29,39 @@ beforeEach(async () => {
   accounts = await web3.eth.getAccounts()
   // Use one of those accounts to deploy the contract
   inbox = await new web3.eth.Contract(JSON.parse(interface))
-    .deploy({ data: bytecode, arguments: ['Hi there!']})
-    .send({ from: accounts[0], gas: '1000000' })
+    .deploy({
+      data: bytecode,
+      arguments: ['Hi there!']
+    })
+    .send({
+      from: accounts[0],
+      gas: '1000000'
+    })
 })
 
 describe('Inbox', () => {
   it('deploys a contract', () => {
-    console.log(inbox)
+    //if the contract has an address, it can be safely assumed
+    //that it has been successfully deployed
+    //'ok' asks: is this (this.options.address) a defined value
+    assert.ok(inbox.options.address)
+  })
 
+  it('has a default message', async () => {
+    //reference instance of the contract, which has a property called
+    // methods, an object that contains all the public methods
+    // available to it (tied to the contract)
+    //Could be .setMessage().call(), but that would require an
+    // argument, which .message() does not
+    //.call() customizes how the function is called
+    const message = await inbox.methods.message().call()
+    assert.equal(message, 'Hi there!')
+  })
+
+  it('can change the message', async () => {
+    await inbox.methods.setMessage('bye').send({ from: accounts[0] })
+    const message = await inbox.methods.message().call()
+    assert.equal(message, 'bye')
   })
 })
 
