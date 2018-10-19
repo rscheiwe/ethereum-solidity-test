@@ -59,40 +59,11 @@ describe('Inbox', () => {
   })
 
   it('can change the message', async () => {
+    //first line: set a new message and send it out to the network,
+    //being sure to specify where/who it's coming from (e.g.,
+    // who's paying the gas)
     await inbox.methods.setMessage('bye').send({ from: accounts[0] })
     const message = await inbox.methods.message().call()
     assert.equal(message, 'bye')
   })
 })
-
-//Mocha tests
-
-// class Car {
-//   park() {
-//     return 'stopped'
-//   }
-//   drive() {
-//     return 'vroom'
-//   }
-// }
-//
-//
-// let car;
-//
-// beforeEach(() => {
-//   car = new Car()
-// })
-// //describe test
-// describe('Car', () => {
-//   //first test
-//   it('park should return a string, "stopped"', () => {
-//     //functionality testing
-//     // const car = new Car()
-//     //assert.equal checks to make sure both args are equal
-//     assert.equal(car.park(), 'stopped')
-//   })
-//   it('drive should return a string "vroom"', () => {
-//     // const car = new Car()
-//     assert.equal(car.drive(), 'vroom')
-//   })
-// })
